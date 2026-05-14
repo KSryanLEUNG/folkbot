@@ -1,0 +1,84 @@
+# Folkbot config — copy to folkbot.toml and fill in.
+
+[llm]
+# v0.1 supports "openai" only. Ollama is OpenAI-compatible — use "openai" with
+# base_url = "http://localhost:11434/v1".
+provider = "openai"
+
+# OpenAI-compatible base URL.
+# Examples:
+#   Poe         → "https://api.poe.com/v1"
+#   OpenAI      → "https://api.openai.com/v1"
+#   Ollama      → "http://localhost:11434/v1"
+#   Together    → "https://api.together.xyz/v1"
+#   Groq        → "https://api.groq.com/openai/v1"
+#   OpenRouter  → "https://openrouter.ai/api/v1"
+base_url = "https://api.openai.com/v1"
+
+# Model id as the provider names it.
+# Examples: "gpt-4o-mini", "gpt-4o", "claude-3-5-sonnet-latest"
+model = "gpt-4o-mini"
+
+# Read the API key from this env var (recommended). Falls back to api_key below
+# if this is omitted.
+api_key_env = "OPENAI_API_KEY"
+
+# Hardcode (NOT recommended — easy to commit by accident).
+# api_key = "sk-..."
+
+[agent]
+system_prompt = """
+You are a family-oriented AI assistant. Keep replies short and natural, like
+a member of the household talking. If you don't know, say so plainly.
+
+# Tool usage discipline (important)
+You have the following tools — USE THEM when they apply. Don't just say "got
+it, I'll remember" without writing anything down.
+
+- The owner tells you something about YOURSELF (nickname, personality, catch
+  phrases, speaking style, past memories)
+  → Call `soul_patch` immediately. Don't just nod and move on.
+- A user tells you a fact about THEMSELVES (allergies, birthday, preferences,
+  plans, decisions, deadlines)
+  → Call `fact_remember` immediately.
+- First time someone is talking to you → ask their name, then call
+  `user_identify` once they tell you.
+
+Calling tools is not optional. If a tool call fails (e.g. not the owner,
+cooldown active), be honest: tell the user you couldn't write it to memory
+this time and explain why. Don't pretend you remembered.
+
+# Reply format
+Historical messages you see are prefixed with `[2026-05-07 16:30 | DM] Name:`
+— that's metadata for you to reason about timing/context, NOT a format to
+imitate. Just talk normally. Do not prepend `[time | DM/group] Folkbot:` or
+similar headers to your own replies.
+"""
+
+[channels.telegram]
+bot_token_env = "TELEGRAM_BOT_TOKEN"
+# Allowlist of numeric Telegram user IDs that may talk to the bot. Anyone else
+# is silently ignored. Get your own ID by messaging @userinfobot.
+allowed_users = ["123456789"]
+
+# Web fetching via Anthropic's official MCP `fetch` server.
+# Runtime: uv (install: `curl -LsSf https://astral.sh/uv/install.sh | sh`).
+# First launch downloads the Python package into a cached venv (~10s);
+# subsequent launches are instant.
+# Exposes one tool: `fetch_fetch(url, max_length?, start_index?, raw?)`.
+[[mcp.servers]]
+name = "fetch"
+command = "uvx"
+args = ["mcp-server-fetch"]
+
+# Local filesystem MCP — scoped to a sandboxed workspace, NOT $HOME.
+# Anthropic's reference filesystem server; the directory args become the
+# server's allowed roots, so Folkbot can only read/write inside this folder.
+# Path is relative to folkbot's cwd (where you run it), so portable across
+# macOS / Linux / WSL.
+# Tools (namespaced fs_*): read_file, write_file, edit_file, create_directory,
+# list_directory, move_file, search_files, get_file_info, list_allowed_directories.
+[[mcp.servers]]
+name = "fs"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "./workspace"]

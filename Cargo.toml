@@ -1,0 +1,43 @@
+[package]
+name = "folkbot"
+version = "0.1.0"
+edition = "2021"
+description = "Always-on family AI agent in Rust with shared identity, persistent memory, and multimodal Telegram/CLI channels"
+repository = "https://github.com/ryanrain-ifsh/folkbot"
+readme = "README.md"
+keywords = ["ai", "agent", "llm", "chatbot", "telegram"]
+categories = ["command-line-utilities"]
+license = "MIT"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", features = ["json", "rustls-tls", "stream", "multipart"], default-features = false }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+async-trait = "0.1"
+futures-util = "0.3"
+async-stream = "0.3"
+bytes = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+toml = "0.8"
+dotenvy = "0.15"
+rustyline = "14"
+colored = "2"
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "derive"], default-features = false }
+hostname = "0.4"
+whoami = "1"
+tiktoken-rs = "0.5"
+teloxide = { version = "0.17", default-features = false, features = ["macros", "ctrlc_handler", "rustls"] }
+dialoguer = { version = "0.11", default-features = false, features = ["fuzzy-select"] }
+argon2 = "0.5"
+rand_core = { version = "0.6", features = ["getrandom"] }
+rpassword = "7"
+base64 = "0.22"
+
+[profile.release]
+strip = true
+lto = "thin"
+codegen-units = 1

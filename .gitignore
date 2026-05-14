@@ -1,0 +1,9 @@
+/target
+/workspace
+.DS_Store
+/data
+/.env
+.env
+/.folkbot_history
+folkbot.toml
+fri.toml
