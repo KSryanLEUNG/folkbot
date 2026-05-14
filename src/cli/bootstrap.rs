@@ -39,6 +39,13 @@ pub(crate) struct Bootstrap {
 pub(crate) async fn bootstrap(config_path: &str, pool: &SqlitePool) -> Result<Bootstrap> {
     let cfg = Config::load(config_path)
         .with_context(|| format!("loading {}", config_path))?;
+
+    // MCP filesystem server (and inbound media ingest) both need this to
+    // exist before they're invoked. Create eagerly so a fresh checkout
+    // works on first run.
+    std::fs::create_dir_all(crate::media::WORKSPACE_DIR)
+        .with_context(|| format!("creating workspace dir '{}'", crate::media::WORKSPACE_DIR))?;
+
     let (llm, summarizer_llm) = cfg.build_llms()?;
 
     let bg_handle = if cfg.agent.compressor.interval_seconds > 0 {
