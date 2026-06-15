@@ -5,3 +5,4 @@
 .env
 /.folkbot_history
 folkbot.toml
+OPTIMIZATION_PLAN.md
