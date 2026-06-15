@@ -16,13 +16,13 @@ flowchart TB
 
     Owner[L2 · users.role = 'owner'<br/>soul_patch · cross_user_transcript<br/>send_message · sees everyone's last_summary]:::high
 
-    Vice[L3 · users.role = 'vice_owner'<br/>sees others' vibes (pre-summarized)<br/>send_message<br/>no soul_patch · no raw text]:::mid
+    Vice["L3 · users.role = 'vice_owner'<br/>sees others' vibes (pre-summarized)<br/>send_message<br/>no soul_patch · no raw text"]:::mid
 
     Regular[L4 · users.role = 'regular'<br/>only sees their own world<br/>doesn't know others exist]:::low
 
     AllowlistedNoId[L5 · in telegram allowlist but unidentified<br/>goes through user_identify flow<br/>defaults to regular]:::low
 
-    Stranger[L6 · not in allowlist<br/>silent ignore (no response at all)]:::none
+    Stranger["L6 · not in allowlist<br/>silent ignore (no response at all)"]:::none
 
     OS -->|can set-role for any user| Owner
     Owner -->|set-role| Vice
@@ -47,7 +47,7 @@ flowchart TB
     BuildP["Principal {channel, principal_id}"]
     Inbound --> BuildP
 
-    BuildP --> AllowChk{telegram?<br/>&& not in allowlist?}:::gate
+    BuildP --> AllowChk{"telegram?<br/>&& not in allowlist?"}:::gate
     AllowChk -->|yes| Drop[silent ignore]:::reject
     AllowChk -->|no| Lookup
 
@@ -70,7 +70,7 @@ flowchart TB
     ChannelChk -->|cli| PwChk{users.password_hash<br/>!= NULL?}:::gate
     ChannelChk -->|other| Reject1[reject + hint<br/>folkbot user link or set-password]:::reject
 
-    PwChk -->|yes| Challenge[return challenge_required<br/>REPL uses rpassword to grab password<br/>↓<br/>verify_password (argon2id)]:::gate
+    PwChk -->|yes| Challenge["return challenge_required<br/>REPL uses rpassword to grab password<br/>↓<br/>verify_password (argon2id)"]:::gate
     PwChk -->|no| Reject2[reject + hint]:::reject
 
     Challenge -->|verify ok| LinkPw[link_principal]:::effect
@@ -207,7 +207,7 @@ flowchart TB
     Check1 -->|no| Block1[bail! 'only owner can change' → tool fails]:::defense
     Check1 -->|yes| Check2
 
-    Check2{name in locked_fields?<br/>(default yes)}:::defense
+    Check2{"name in locked_fields?<br/>(default yes)"}:::defense
     Check2 -->|yes| Block2[bail! 'field is locked']:::defense
     Check2 -->|no| Check3
 

@@ -29,7 +29,7 @@ flowchart TB
     Mo --> Q
 
     M -.->|LLM extracts| F
-    D -.->|LLM extracts (future)| F
+    D -.->|LLM extracts · future| F
 ```
 
 **Properties**:

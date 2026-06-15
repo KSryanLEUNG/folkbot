@@ -142,7 +142,7 @@ flowchart LR
     McpT1 --> Reg
     McpT2 --> Reg
 
-    Reg --> LLM[LLM (via OpenAI tools field)]
+    Reg --> LLM["LLM (via OpenAI tools field)"]
 
     Child1[(uvx mcp-server-fetch<br/>Python)]:::child
     Child2[(npx server-filesystem<br/>Node)]:::child
@@ -208,7 +208,7 @@ flowchart TB
 
     ForEach --> ParseArgs[serde_json::from_str call.function.arguments<br/>→ Value · on failure → empty Object]
     ParseArgs --> EmitStart[on_event TurnEvent::ToolStart]
-    EmitStart --> BuildCtx[ToolContext{pool, principal, user_id, outbound}]
+    EmitStart --> BuildCtx["ToolContext{pool, principal, user_id, outbound}"]
     BuildCtx --> Invoke[registry.invoke name args ctx]
 
     Invoke --> Branch{tool kind?}

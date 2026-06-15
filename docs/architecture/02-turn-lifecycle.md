@@ -131,7 +131,7 @@ stateDiagram-v2
     ToolDispatch --> StateDirty: user_identify | soul_patch | fact_remember | fact_forget
     ToolDispatch --> StateLoaded: side-effect-only (MCP, send_message, cross_user_transcript)
 
-    StateDirty --> StateLoaded: TurnState::load again
+    StateDirty --> StateLoaded: TurnState.load again
 
     note right of WithTools
         Looped up to MAX_TOOL_ITERS=6.

@@ -41,7 +41,7 @@ flowchart TB
     VN --> VI
 
     Disp -->|msg.document| D{mime?}:::doc
-    D -->|image/*| PD[treat as photo<br/>marker '[image file: name]']
+    D -->|image/*| PD["treat as photo<br/>marker '[image file: name]'"]
     D -->|text/* or json/yaml/xml + ≤10MB| TD[download bytes → utf8 string]
     D -->|other| ND["[file: name (size · mime)]<br/>marker only"]
     PD --> PI
@@ -105,7 +105,7 @@ sequenceDiagram
             Provider-->>W: 4xx/5xx
             W-->>TG: Err
             TG->>Agent: TurnInput {<br/>text: '[voice 5s]',<br/>media: [Voice {transcript: None}]<br/>}
-            Note over Agent: LLM sees only marker;<br/>Folkbot replies "I can't hear voice yet"
+            Note over Agent: LLM sees only marker ·<br/>Folkbot replies: I can't hear voice yet
         end
     else audio_creds is None
         TG->>Agent: same as transcript=None branch

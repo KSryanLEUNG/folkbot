@@ -199,7 +199,7 @@ sequenceDiagram
 
     Note over T: 3. LLM emits tool calls
     T->>F: INSERT INTO facts (user_id=Lucky, imp=M, content=...)
-    T->>S: BEGIN IMMEDIATE; UPDATE soul_card; INSERT soul_revisions; COMMIT
+    T->>S: BEGIN IMMEDIATE · UPDATE soul_card · INSERT soul_revisions · COMMIT
 
     Note over T: 4. Final reply
     T->>M: INSERT messages (role=assistant, conv_id=room, user_id=Lucky)
